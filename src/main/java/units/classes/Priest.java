@@ -1,13 +1,13 @@
-package units.unitsClass;
+package units.classes;
 
 import teams.Team;
 import units.MagicalUnit;
 import units.enums.AttackType;
 
-public class Healer extends MagicalUnit implements HealerInterface {
+public class Priest extends MagicalUnit implements Healer {
 
-    public Healer(String name, Team team){
-        super("Healer", 1, 7, 0, AttackType.RANGED, 10, team);
+    public Priest(String name, Team team){
+        super("Healer", 1, 8, 0, AttackType.RANGED, 10, team);
         this.setName(name);
     }
 

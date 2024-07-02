@@ -2,6 +2,8 @@ package units;
 
 import teams.Team;
 import units.enums.AttackType;
+import utils.UnitUtils;
+import static utils.GameUtils.checkWinner;
 
 // --> Abstract Class <--
 // An abstract class is a class that cannot be instantiated directly.
@@ -17,10 +19,7 @@ public abstract class Unit {
     public Unit target = null;
     public Team team;
 
-    public void run() {
-        System.out.println(name + " is running");
-    }
-    public void attack() {
+    public final void attack() {
         if(target != null){
             String targetName = target.getName();
             float targetHealth = target.getHealth();
@@ -33,21 +32,11 @@ public abstract class Unit {
                 return;
             }
             System.out.println(name + " is attacking " + targetName);
-            float damageInflicted = calculateDamageAfterArmor(damage, targetArmor);
+            float damageInflicted = UnitUtils.calculateDamageAfterArmor(damage, targetArmor);
             float targetNewHealth = targetHealth - damageInflicted;
             if(targetNewHealth <= 0){
                 System.out.println(targetName + " has been killed by " + name);
-                boolean allDead = true;
-
-                for (Unit member : target.getTeam().getMembers()){
-                    if (member.getHealth() > 0) {
-                        allDead = false;
-                        break;
-                    }
-                }
-                if (allDead) {
-                    System.out.println("\n" + team.getName() + " WINS!");
-                }
+                checkWinner(target.getTeam(), team);
                 return;
             }
             target.setHealth(targetNewHealth);
@@ -57,21 +46,6 @@ public abstract class Unit {
         }
     }
 
-    private static float calculateDamageAfterArmor(float damage, int armor) {
-        if (armor == 0) {
-            return damage;
-        }
-
-        // Each armor point reduces damage by 10%
-        float reductionFactor = 1 - (armor * 0.1f);
-
-        // Ensure reduction factor doesn't go below 0
-        if (reductionFactor < 0) {
-            reductionFactor = 0;
-        }
-
-        return damage * reductionFactor;
-    }
 
     // Constructor
 

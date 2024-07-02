@@ -1,9 +1,12 @@
-package units.unitsClass;
+package units.classes;
 
 import teams.Team;
 import units.PhysicalUnit;
 import units.Unit;
 import units.enums.AttackType;
+import utils.UnitUtils;
+
+import static utils.GameUtils.checkWinner;
 
 // --> Inheritance <--
 // In Java, it is possible to inherit attributes and methods from one class to another. We group the "inheritance concept" into two categories:
@@ -11,7 +14,7 @@ import units.enums.AttackType;
 //      superclass (parent) - the class being inherited from
 // To inherit from a class, use the extends keyword.
 
-public class Warrior extends PhysicalUnit implements WarriorInterface{
+public class Warrior extends PhysicalUnit implements Melee {
 
     public Warrior(String name, Team team){
         super("Warrior", 2, 10, 2, AttackType.MELEE, 10, team);
@@ -26,10 +29,10 @@ public class Warrior extends PhysicalUnit implements WarriorInterface{
             float abilityDamage = 0;
             int staminaCost = 0;
             if(ability.equals("Execute")){
-                abilityDamage = 6;
+                abilityDamage = UnitUtils.calculateDamageAfterArmor(6, target.getArmor());
                 staminaCost = 2;
             } else if(ability.equals("Slam")){
-                abilityDamage = 3;
+                abilityDamage = UnitUtils.calculateDamageAfterArmor(3, target.getArmor());;
                 staminaCost = 1;
             }else {
                 System.out.println(this.getName() + " try to use " + ability + " but the ability it's not learned");
@@ -59,17 +62,7 @@ public class Warrior extends PhysicalUnit implements WarriorInterface{
             if(targetNewHealth <= 0){
                 System.out.println(this.getName() + " now have " + this.getStamina() + "SP");
                 System.out.println(targetName + " has been killed by " + this.getName());
-                boolean allDead = true;
-
-                for (Unit member : target.getTeam().getMembers()){
-                    if (member.getHealth() > 0) {
-                        allDead = false;
-                        break;
-                    }
-                }
-                if (allDead) {
-                    System.out.println("\n" + this.getTeam().getName() + " WINS!");
-                }
+                checkWinner(this.getTeam(), target.getTeam());
                 return;
             }
             System.out.println(this.getName() + " now have " + this.getStamina() + "SP");

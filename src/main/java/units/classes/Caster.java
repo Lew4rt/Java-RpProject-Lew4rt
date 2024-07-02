@@ -1,4 +1,4 @@
-package units.unitsClass;
+package units.classes;
 
 // --> Interface <--
 // An interface is a reference type, similar to a class, that is used to specify a set of abstract methods that a class must implement.
@@ -6,6 +6,6 @@ package units.unitsClass;
 // An interface primarily contains abstract methods, which are method signatures without bodies.
 // Implementing classes must provide the actual implementation for these methods.
 
-public interface MageInterface {
+public interface Caster {
     void castSpell(String spell);
 }

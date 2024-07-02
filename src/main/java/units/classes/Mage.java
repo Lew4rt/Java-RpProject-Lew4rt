@@ -1,18 +1,19 @@
-package units.unitsClass;
+package units.classes;
 
 import teams.Team;
 import units.MagicalUnit;
 import units.Unit;
 import units.enums.AttackType;
+import static utils.GameUtils.checkWinner;
 
 // --> Interface Implementation <--
 // A class that implements an interface must provide implementations for all of the interface’s abstract methods.
 // To implement an interface use the implements keyword.
 
-public class Mage extends MagicalUnit implements MageInterface {
+public class Mage extends MagicalUnit implements Caster {
 
     public Mage(String name, Team team){
-        super("Mage", 2, 7, 0, AttackType.RANGED, 12, team);
+        super("Mage", 2, 7, 1, AttackType.RANGED, 12, team);
         this.setName(name);
     }
 
@@ -57,17 +58,7 @@ public class Mage extends MagicalUnit implements MageInterface {
             if(targetNewHealth <= 0){
                 System.out.println(this.getName() + " now have " + this.getMana() + "MP");
                 System.out.println(targetName + " has been killed by " + this.getName());
-                boolean allDead = true;
-
-                for (Unit member : target.getTeam().getMembers()){
-                    if (member.getHealth() > 0) {
-                        allDead = false;
-                        break;
-                    }
-                }
-                if (allDead) {
-                    System.out.println("\n" + this.getTeam().getName() + " WINS!");
-                }
+                checkWinner(this.getTeam(), target.getTeam());
                 return;
             }
             System.out.println(this.getName() + " now have " + this.getMana() + "MP");

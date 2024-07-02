@@ -1,9 +1,9 @@
 import teams.Team;
 import units.Unit;
-import units.unitsClass.Healer;
-import units.unitsClass.Mage;
-import units.unitsClass.Rogue;
-import units.unitsClass.Warrior;
+import units.classes.Priest;
+import units.classes.Mage;
+import units.classes.Rogue;
+import units.classes.Warrior;
 
 public class Main {
     public static void main(String[] args){
@@ -13,7 +13,7 @@ public class Main {
         Mage lewi = new Mage("Lewi", teamBlue);
         Warrior tami = new Warrior("Tamilsson", teamBlue);
         Rogue brandon = new Rogue("Brancas", teamRed);
-        Healer dema = new Healer("DeMaa", teamRed);
+        Priest dema = new Priest("DeMaa", teamRed);
 
         Unit[] teamBlueMembers = {lewi, tami};
         teamBlue.setMembers(teamBlueMembers);
@@ -38,7 +38,7 @@ public class Main {
         preparationTime(4000, true);
 
         brandon.setTarget(lewi);
-        brandon.attack();
+        brandon.useAbility("Backstab");
 
         preparationTime(4000, true);
 
@@ -101,18 +101,14 @@ public class Main {
 
         preparationTime(4000, false);
 
-
-
-
-
     }
 
-    private static void preparationTime(int Time, boolean nextTurn){
+    private static void preparationTime(int time, boolean nextTurn){
         if (nextTurn){
             System.out.println("--> NEXT TURN <--");
         }
         try {
-            Thread.sleep(Time);
+            Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

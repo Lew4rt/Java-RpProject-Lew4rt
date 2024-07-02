@@ -1,14 +1,17 @@
-package units.unitsClass;
+package units.classes;
 
 import teams.Team;
 import units.PhysicalUnit;
 import units.Unit;
 import units.enums.AttackType;
+import utils.UnitUtils;
 
-public class Rogue extends PhysicalUnit implements RogueInterface {
+import static utils.GameUtils.checkWinner;
+
+public class Rogue extends PhysicalUnit implements Melee {
 
     public Rogue(String name, Team team){
-        super("Rogue", 2, 7, 1, AttackType.MELEE, 12, team);
+        super("Rogue", 2, 8, 1, AttackType.MELEE, 12, team);
         this.setName(name);
     }
 
@@ -20,10 +23,10 @@ public class Rogue extends PhysicalUnit implements RogueInterface {
             float abilityDamage = 0;
             int staminaCost = 0;
             if(ability.equals("Eviscerate")){
-                abilityDamage = 5;
+                abilityDamage = UnitUtils.calculateDamageAfterArmor(5, target.getArmor());;
                 staminaCost = 4;
             } else if(ability.equals("Backstab")){
-                abilityDamage = 3;
+                abilityDamage = UnitUtils.calculateDamageAfterArmor(3, target.getArmor());;
                 staminaCost = 2;
             }else {
                 System.out.println(this.getName() + " try to use " + ability + " but the ability it's not learned");
@@ -47,17 +50,7 @@ public class Rogue extends PhysicalUnit implements RogueInterface {
             if(targetNewHealth <= 0){
                 System.out.println(this.getName() + " now have " + this.getStamina() + "SP");
                 System.out.println(targetName + " has been killed by " + this.getName());
-                boolean allDead = true;
-
-                for (Unit member : target.getTeam().getMembers()){
-                    if (member.getHealth() > 0) {
-                        allDead = false;
-                        break;
-                    }
-                }
-                if (allDead) {
-                    System.out.println("\n" + this.getTeam().getName() + " WINS!");
-                }
+                checkWinner(this.getTeam(), target.getTeam());
                 return;
             }
             System.out.println(this.getName() + " now have " + this.getStamina() + "SP");
